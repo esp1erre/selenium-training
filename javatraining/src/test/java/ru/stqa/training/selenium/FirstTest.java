@@ -15,7 +15,6 @@ public class FirstTest {
 
     @Before
     public void start(){
-        System.setProperty("webdriver.gecko.driver", "C:\\Program Files (x86)\\Geckodriver\\geckodriver.exe");
         driver = new FirefoxDriver();
         wait = new WebDriverWait(driver, 10);
     }
