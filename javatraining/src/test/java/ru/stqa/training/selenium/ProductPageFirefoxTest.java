@@ -19,7 +19,7 @@ public class ProductPageFirefoxTest {
     }
 
     @Test
-    public void productPageFirefoxTest(){
+    public void productPageFirefoxTest() {
         driver.get("http://localhost/litecart/en/");
         WebElement mainPageProduct = driver.findElement(By.xpath("//*[@id='box-campaigns']//a[@class='link']"));
         String mainPageName = mainPageProduct.findElement(By.xpath("./div[@class='name']")).getText();
@@ -33,7 +33,9 @@ public class ProductPageFirefoxTest {
         color = campPrice.getCssValue("color");
         assertTrue(getChannel(color, RGB.GREEN) == 0 && getChannel(color, RGB.BLUE) == 0);
         String mainPageCampPriceText = campPrice.getText();
-        assertTrue(campPrice.getSize().height > regPrice.getSize().height && campPrice.getSize().width > regPrice.getSize().width);
+        String regPriceFontSize = regPrice.getCssValue("font-size").substring(0, regPrice.getCssValue("font-size").indexOf("px"));
+        String campPriceFontSize = campPrice.getCssValue("font-size").substring(0, campPrice.getCssValue("font-size").indexOf("px"));
+        assertTrue(Double.parseDouble(campPriceFontSize) > Double.parseDouble(regPriceFontSize));
         driver.get(mainPageProduct.getAttribute("href"));
         assertTrue(driver.findElement(By.xpath("//h1")).getText().equals(mainPageName));
         regPrice = driver.findElement(By.xpath("//*[@class='regular-price']"));
@@ -46,22 +48,28 @@ public class ProductPageFirefoxTest {
         assertTrue(campPrice.getTagName().equals("strong"));
         color = campPrice.getCssValue("color");
         assertTrue(getChannel(color, RGB.GREEN) == 0 && getChannel(color, RGB.BLUE) == 0);
-        assertTrue(campPrice.getSize().height > regPrice.getSize().height && campPrice.getSize().width > regPrice.getSize().width);
+        regPriceFontSize = regPrice.getCssValue("font-size").substring(0, regPrice.getCssValue("font-size").indexOf("px"));
+        campPriceFontSize = campPrice.getCssValue("font-size").substring(0, campPrice.getCssValue("font-size").indexOf("px"));
+        assertTrue(Double.parseDouble(campPriceFontSize) > Double.parseDouble(regPriceFontSize));
     }
 
     @After
-    public void stop(){
+    public void stop() {
         driver.quit();
     }
 
-    public int getChannel(String rgbString, RGB channel){
-        rgbString = rgbString.substring(4, rgbString.length() - 1);
+    public int getChannel(String rgbString, RGB channel) {
+        rgbString = rgbString.substring(rgbString.indexOf('(') + 1, rgbString.length() - 1);
         String[] channelStrings = rgbString.split(", ");
-        switch (channel){
-            case RED: return Integer.parseInt(channelStrings[0]);
-            case GREEN: return Integer.parseInt(channelStrings[1]);
-            case BLUE: return Integer.parseInt(channelStrings[2]);
-            default: return -1;
+        switch (channel) {
+            case RED:
+                return Integer.parseInt(channelStrings[0]);
+            case GREEN:
+                return Integer.parseInt(channelStrings[1]);
+            case BLUE:
+                return Integer.parseInt(channelStrings[2]);
+            default:
+                return -1;
         }
     }
 
