@@ -26,7 +26,6 @@ public class ProductPageIETest {
         WebElement regPrice = mainPageProduct.findElement(By.xpath(".//*[@class='regular-price']"));
         assertTrue(regPrice.getTagName().equals("s"));
         String color = regPrice.getCssValue("color");
-        System.out.println(color);
         assertTrue(getChannel(color, RGB.RED) == getChannel(color, RGB.GREEN) && getChannel(color, RGB.RED) == getChannel(color, RGB.BLUE));
         String mainPageRegPriceText = regPrice.getText();
         WebElement campPrice = mainPageProduct.findElement(By.xpath(".//*[@class='campaign-price']"));
